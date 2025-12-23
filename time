@@ -1,0 +1,49 @@
+// ===== STORY DATE CONFIG =====
+let day = 1;
+let month = 1;
+let year = 1042;
+
+// Calendar settings
+const daysInMonth = 30;
+const secondsPerDay = 2;
+
+// Custom month names
+const monthNames = [
+  "January", "February", "March", "April",
+  "June", "July", "August", "September",
+  "October", "November", "December"
+];
+
+// Load saved date (if exists)
+const savedDate = JSON.parse(localStorage.getItem("storyDate"));
+if (savedDate) {
+  day = savedDate.day;
+  month = savedDate.month;
+  year = savedDate.year;
+}
+
+function updateDisplay() {
+  document.getElementById("dateDisplay").textContent =
+    `${day} ${monthNames[month - 1]}, Year ${year}`;
+}
+
+function advanceDay() {
+  day++;
+
+  if (day > daysInMonth) {
+    day = 1;
+    month++;
+  }
+
+  if (month > monthNames.length) {
+    month = 1;
+    year++;
+  }
+
+  localStorage.setItem("storyDate", JSON.stringify({ day, month, year }));
+  updateDisplay();
+}
+
+// Start
+updateDisplay();
+setInterval(advanceDay, secondsPerDay * 1000);
